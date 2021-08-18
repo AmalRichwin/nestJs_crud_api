@@ -1,20 +1,18 @@
-import { Get, Controller, Post } from '@nestjs/common';
+import { Get, Controller, Post, Param } from '@nestjs/common';
 import {} from '@nestjs/common';
+import { FindTeacherResponseDto } from './dto/teacher.dto';
 
 @Controller('teachers')
 export class TeacherController {
   @Get()
-  getTeachers() {
-    return 'get teacher';
+  getTeachers(): FindTeacherResponseDto[] {
+    return 'All Teachers';
   }
 
   @Get('/:teacherId')
-  getTeacherById() {
-    return 'get teacher';
-  }
-
-  @Post()
-  createTeacher() {
-    return 'create teacher';
+  getTeacherById(
+    @Param('teacherId') teacherId: string,
+  ): FindTeacherResponseDto {
+    return `Get Teacher With Id Of ${teacherId}`;
   }
 }
