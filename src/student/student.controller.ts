@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { StudentService } from './student.service';
 import { Put } from '@nestjs/common';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import {
@@ -9,9 +11,12 @@ import {
 
 @Controller('students')
 export class StudentController {
+  constructor(private readonly studentService: StudentService) {}
+
   @Get()
   getStudents(): FindStudentsResponseDto[] {
-    return 'All Students';
+    // @ts-ignore
+    return this.studentService.getStudents();
   }
 
   @Get('/:studentId')
@@ -19,13 +24,13 @@ export class StudentController {
   getStudentById(
     @Param('studentId') studentId: string,
   ): FindStudentsResponseDto {
-    return `Get Student by Id ${studentId}`;
+    return this.studentService.getStudentById(studentId);
   }
 
   @Post()
   // createStudent(@Body('name') name: string) {
   createStudent(@Body() body: CreateStudentDto): StudentResponseDto {
-    return `Create Student ${JSON.stringify(body)}`;
+    return this.studentService.createStudent(body);
   }
 
   @Put('/:studentId')
@@ -33,8 +38,6 @@ export class StudentController {
     @Param('studentId') studentId: string,
     @Body() body: UpdateStudentDto,
   ): StudentResponseDto {
-    return `Update Student -> studentId: ${studentId} updated details ->${JSON.stringify(
-      body,
-    )}`;
+    return this.studentService.updateStudent(studentId, body);
   }
 }
