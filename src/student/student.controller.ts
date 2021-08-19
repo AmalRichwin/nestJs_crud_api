@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { StudentService } from './student.service';
 import { Put } from '@nestjs/common';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import {
   CreateStudentDto,
   FindStudentsResponseDto,
@@ -22,7 +29,7 @@ export class StudentController {
   @Get('/:studentId')
   // getStudentById(@Param() params: { studentId: string }) {
   getStudentById(
-    @Param('studentId') studentId: string,
+    @Param('studentId', new ParseUUIDPipe()) studentId: string,
   ): FindStudentsResponseDto {
     return this.studentService.getStudentById(studentId);
   }
@@ -35,7 +42,7 @@ export class StudentController {
 
   @Put('/:studentId')
   updateStudent(
-    @Param('studentId') studentId: string,
+    @Param('studentId', new ParseUUIDPipe()) studentId: string,
     @Body() body: UpdateStudentDto,
   ): StudentResponseDto {
     return this.studentService.updateStudent(studentId, body);
